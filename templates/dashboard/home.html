@@ -1,0 +1,8 @@
+<h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
+<ul>
+    <li>Role:</li>
+    <li>Course: </li>
+    <li>Members: </li>
+    <li>Last login: </li>
+</ul>
+    <a href="{% url 'admin_panel' %}">Open admin panel</a>

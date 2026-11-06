@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>CampusConnect</title></head>
+<body>
+    <nav>
+<form method="post" action="{% url 'logout' %}">
+    <button type="submit">Log out</button>
+    </form>
+    <a href="{% url 'login' %}">Log in</a>
+    <a href="{% url 'signup' %}">Sign up</a>
+    </nav>
+        <main></main>
+</body>
+</html>
