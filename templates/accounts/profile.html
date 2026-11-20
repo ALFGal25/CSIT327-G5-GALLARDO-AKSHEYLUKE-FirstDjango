@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>My profile</h2>
+<dl class="profile">
+    <dt>Username</dt><dd>{{ user.username }}</dd>
+    <dt>Name</dt><dd>{{ user.get_full_name|default:"-" }}</dd>
+    <dt>Email</dt><dd>{{ user.email|default:"-" }}</dd>
+    <dt>Member since</dt><dd>{{ user.date_joined|date:"M d, Y" }}</dd>
+    <dt>Owned games</dt><dd>{{ owned_count }}</dd>
+    <dt>Wanted games</dt><dd>{{ wanted_count }}</dd>
+    <dt>Collection value</dt><dd>₱{{ total_value|floatformat:"2g" }}</dd>
+</dl>
+{% endblock %}

@@ -1,14 +1,49 @@
 {% extends "base.html" %}
 
+{% block main_class %}wide{% endblock %}
+
 {% block content %}
 <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
-<ul>
-    <li>Role: {{ user.get_role_display }}</li>
-    <li>Course: {{ user.course }}</li>
-    <li>Members: {{ member_count }}</li>
-    <li>Last login: {{ user.last_login }}</li>
-</ul>
-{% if is_admin %}
-    <a href="{% url 'admin_panel' %}">Open admin panel</a>
+
+<div class="stats">
+    <a class="stat" href="{% url 'game_list' %}">
+        <span class="stat-number">{{ owned_count }}</span>
+        <span class="stat-label">Owned games</span>
+    </a>
+    <a class="stat" href="{% url 'want_list' %}">
+        <span class="stat-number">{{ wanted_count }}</span>
+        <span class="stat-label">Wanted games</span>
+    </a>
+    <div class="stat">
+        <span class="stat-number">₱{{ total_value|floatformat:"2g" }}</span>
+        <span class="stat-label">Estimated collection value</span>
+    </div>
+</div>
+
+<div class="actions">
+    <a class="btn" href="{% url 'search' %}">Do I own this?</a>
+    <a class="btn btn-light" href="{% url 'game_add' %}">Add a game</a>
+</div>
+
+<h3>Recently added</h3>
+{% if recent_games %}
+<div class="table-wrap">
+    <table class="data-table">
+        <thead>
+            <tr><th>Title</th><th>Platform</th><th>Price</th></tr>
+        </thead>
+        <tbody>
+            {% for g in recent_games %}
+            <tr>
+                <td>{{ g.title }}</td>
+                <td>{{ g.get_platform_display }}</td>
+                <td>₱{{ g.price|floatformat:"2g" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="muted">Nothing here yet. <a href="{% url 'game_add' %}">Add your first game</a>.</p>
 {% endif %}
 {% endblock %}

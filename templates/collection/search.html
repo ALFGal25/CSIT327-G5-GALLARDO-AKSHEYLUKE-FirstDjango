@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block main_class %}wide{% endblock %}
+
+{% block content %}
+<h2>Do I already own this?</h2>
+<form method="get" class="search-form">
+    <input type="text" name="q" value="{{ q }}" placeholder="Game title" autofocus>
+    <select name="platform">
+        <option value="">All platforms</option>
+        {% for value, label in platforms %}
+            <option value="{{ value }}" {% if value == platform %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn">Search</button>
+</form>
+
+{% if searched %}
+    {% if results %}
+        <div class="alert alert-success">
+            Yes, you own {{ results|length }} matching game{{ results|length|pluralize }}.
+        </div>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Title</th><th>Platform</th><th>Condition</th><th>Completeness</th></tr>
+                </thead>
+                <tbody>
+                    {% for g in results %}
+                    <tr>
+                        <td>{{ g.title }}</td>
+                        <td>{{ g.get_platform_display }}</td>
+                        <td>{{ g.get_condition_display }}</td>
+                        <td>{{ g.get_completeness_display }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-error">Not in your collection.</div>
+        {% if q %}
+            <a class="btn" href="{% url 'want_add' %}?title={{ q|urlencode }}&platform={{ platform|urlencode }}">
+                Add "{{ q }}" to my want list
+            </a>
+        {% endif %}
+    {% endif %}
+{% endif %}
+{% endblock %}

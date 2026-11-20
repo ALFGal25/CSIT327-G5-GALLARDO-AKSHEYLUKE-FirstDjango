@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block main_class %}wide{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <h2>Want list</h2>
+    <a class="btn" href="{% url 'want_add' %}">+ Add to want list</a>
+</div>
+
+{% if wanted %}
+<div class="table-wrap">
+    <table class="data-table">
+        <thead>
+            <tr><th>Title</th><th>Platform</th><th>Expected price</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for w in wanted %}
+            <tr>
+                <td>{{ w.title }}</td>
+                <td>{{ w.get_platform_display }}</td>
+                <td>{% if w.expected_price is not None %}₱{{ w.expected_price|floatformat:"2g" }}{% else %}-{% endif %}</td>
+                <td class="row-actions">
+                    <form method="post" action="{% url 'want_bought' w.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="link-btn">I bought it</button>
+                    </form>
+                    <a class="danger" href="{% url 'want_delete' w.pk %}">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="muted">No wanted games yet. <a href="{% url 'want_add' %}">Add one</a>.</p>
+{% endif %}
+{% endblock %}

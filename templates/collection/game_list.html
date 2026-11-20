@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block main_class %}wide{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <h2>My collection</h2>
+    <a class="btn" href="{% url 'game_add' %}">+ Add game</a>
+</div>
+
+{% if games %}
+<div class="table-wrap">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Title</th><th>Platform</th><th>Condition</th>
+                <th>Completeness</th><th>Price</th><th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for g in games %}
+            <tr>
+                <td>{{ g.title }}</td>
+                <td>{{ g.get_platform_display }}</td>
+                <td>{{ g.get_condition_display }}</td>
+                <td>{{ g.get_completeness_display }}</td>
+                <td>₱{{ g.price|floatformat:"2g" }}</td>
+                <td class="row-actions">
+                    <a href="{% url 'game_edit' g.pk %}">Edit</a>
+                    <a class="danger" href="{% url 'game_delete' g.pk %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="muted">Your collection is empty. <a href="{% url 'game_add' %}">Add your first game</a>.</p>
+{% endif %}
+{% endblock %}
