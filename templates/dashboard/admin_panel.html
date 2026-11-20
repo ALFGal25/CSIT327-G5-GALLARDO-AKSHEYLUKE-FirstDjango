@@ -1,5 +1,39 @@
 {% extends "base.html" %}
 
+{% block main_class %}wide{% endblock %}
+
 {% block content %}
 <h2>Admin Panel</h2>
+<p class="muted">Total members: {{ users|length }}</p>
+
+<div class="table-wrap">
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Role</th>
+                <th>Last login</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <tr>
+                <td>{{ u.username }}</td>
+                <td>{{ u.first_name }} {{ u.last_name }}</td>
+                <td>{{ u.email|default:"-" }}</td>
+                <td>{{ u.course|default:"-" }}</td>
+                <td>
+                    <span class="badge {% if u.role == 'ADMIN' %}badge-admin{% else %}badge-student{% endif %}">
+                        {{ u.get_role_display }}
+                    </span>
+                </td>
+                <td>{{ u.last_login|date:"M d, Y H:i"|default:"Never" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
